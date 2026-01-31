@@ -4,6 +4,7 @@ from .maze_generator import MazeGenerator
 from .maze_visualizer import MazeGeneratorVisualizer, MazePathFindingVisualizer
 from .bfs_path_finder import BFS_Path_Finder
 from .dfs_path_finder import DFS_Path_Finder
+from .dijkstra_path_finder import Dijkstra_Path_Finder
 
 ROWS, COLS = 101, 201
 # ROWS, COLS = 41, 61
@@ -47,10 +48,10 @@ else:
 
     path_vis = MazePathFindingVisualizer(maze.get_grid_map(), CELL)
 
-    path_gen = BFS_Path_Finder(
-        maze.get_grid_map(), (1, 1), (ROWS - 2, COLS - 2)
-    )
+    # path_gen = BFS_Path_Finder(maze.get_grid_map(), (1, 1), (ROWS - 2, COLS - 2))
     # path_gen = DFS_Path_Finder(maze.get_grid_map(), (1,1), (ROWS-2, COLS-2))
+    path_gen = Dijkstra_Path_Finder(maze.get_grid_map(), (1,1), (ROWS-2, COLS-2))
+
     path_gen.start()
     clock = pygame.time.Clock()
 

@@ -1,5 +1,5 @@
 import pygame
-from typing import Deque, Optional, Dict
+from typing import Deque, Optional, Dict, Collection, Any
 from .grid_map import GridMap, Coord
 from .base_path_finder import Path
 
@@ -86,7 +86,7 @@ class MazePathFindingVisualizer:
 
     def draw(
         self,
-        frontier: Optional[Deque[Coord]] = None,
+        frontier: Optional[Collection[Any]] = None,
         current: Optional[Coord] = None,
         path: Optional[Path] = None,
         searched: Optional[Dict[Coord, Optional[Coord]]] = None,
@@ -108,7 +108,22 @@ class MazePathFindingVisualizer:
                 )
 
         if frontier:
-            for r, c in frontier:
+            coords_to_draw = []
+            # Make a copy to safely inspect the first item
+            frontier_items = list(frontier)
+            if frontier_items:
+                first_item = frontier_items[0]
+                # Check if it looks like Dijkstra's frontier: (cost, (r, c))
+                if (
+                    isinstance(first_item, tuple)
+                    and len(first_item) == 2
+                    and isinstance(first_item[0], int)
+                ):
+                    coords_to_draw = [item[1] for item in frontier_items]
+                else:  # Assumes BFS/DFS frontier of (r, c)
+                    coords_to_draw = frontier_items
+
+            for r, c in coords_to_draw:
                 pygame.draw.rect(
                     self.screen,
                     BLUE,
