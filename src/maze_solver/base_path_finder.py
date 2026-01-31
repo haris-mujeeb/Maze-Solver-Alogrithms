@@ -17,7 +17,7 @@ class BasePlanner:
     def __init__(self, grid_map: GridMap, start: Coord, goal: Coord):
         self.grid_map = grid_map
         self.start_coord: Coord = start
-        self.goal_cood: Coord = goal
+        self.goal_coord: Coord = goal
         self.frontier: Deque[Any] = deque()
         self.current: Optional[Coord] = None
 

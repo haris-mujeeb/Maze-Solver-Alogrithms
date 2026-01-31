@@ -15,7 +15,7 @@ class DFS_Path_Finder(BasePlanner):
             return False
 
         self.current = self.frontier.pop()
-        if self.current == self.goal_cood:
+        if self.current == self.goal_coord:
             self.path = self._reconstruct_path()
             return False
 
@@ -33,7 +33,7 @@ class DFS_Path_Finder(BasePlanner):
 
     def _reconstruct_path(self) -> Optional[Path]:
         path = []
-        cur: Optional[Coord] = self.goal_cood
+        cur: Optional[Coord] = self.goal_coord
         while cur is not None:
             path.append(cur)
             cur = self.came_from.get(cur)
