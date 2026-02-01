@@ -33,7 +33,8 @@ class A_Star_Path_Finder(BasePlanner):
     def step(self) -> bool:
         if not self.frontier:
             return False
-
+    
+        # Pop the node with the lowest f-cost
         _ , current = heapq.heappop(self.frontier)
                 
         self.current = current
@@ -46,13 +47,10 @@ class A_Star_Path_Finder(BasePlanner):
         for n in self.grid_map.neighbours(self.current):
             if not self.grid_map.is_walkable(n):
                 continue
-            
 
             g_new = current_cost_g + COST_PER_CELL
 
             if (n not in self.cost_so_far or g_new < self.cost_so_far[n]):
-                # distance = self._get_euclidean_distance(current, self.goal_coord)
-                distance = self._get_manhattan_distance(n, self.goal_coord)
                 self.cost_so_far[n] = g_new
                 self.came_from[n] = self.current
 
@@ -79,10 +77,6 @@ class A_Star_Path_Finder(BasePlanner):
 
         path.reverse()
         return path
-
-    @staticmethod
-    def _get_euclidean_distance(source : Coord, target : Coord) -> int:
-        return ((target[0] - source[0])**2 + (target[1] - source[1])**2)**0.5
 
     @staticmethod
     def _get_manhattan_distance(source : Coord, target : Coord) -> int:
