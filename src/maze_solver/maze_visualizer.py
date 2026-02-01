@@ -112,18 +112,16 @@ class GridMapPathFindingVisualizer:
             # Make a copy to safely inspect the first item
             frontier_items = list(frontier)
             if frontier_items:
-                print(f"DEBUG: frontier_items (type: {type(frontier_items)}): {frontier_items[:5]}...") # Print first 5 items
                 first_item = frontier_items[0]
-                print(f"DEBUG: first_item (type: {type(first_item)}): {first_item}")
                 # Check if it looks like Dijkstra's frontier: (cost, (r, c))
                 if (
                     isinstance(first_item, tuple)
                     and len(first_item) == 2
                     and isinstance(first_item[1], tuple)
                 ):
-                    coords_to_draw = [item[1] for item in frontier_items]
+                    coords_to_draw = [item[1] for item in frontier_items if isinstance(item, tuple) and len(item) == 2]
                 else:  # Assumes BFS/DFS frontier of (r, c)
-                    coords_to_draw = frontier_items
+                    coords_to_draw = [item for item in frontier_items if isinstance(item, tuple) and len(item) == 2]
 
             for r, c in coords_to_draw:
                 pygame.draw.rect(
