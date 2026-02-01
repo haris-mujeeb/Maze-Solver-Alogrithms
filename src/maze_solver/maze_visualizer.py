@@ -72,7 +72,7 @@ class MazeGeneratorVisualizer:
         pygame.display.flip()
 
 
-class MazePathFindingVisualizer:
+class GridMapPathFindingVisualizer:
     def __init__(self, grid_map: GridMap, cell_size=16):
         self.grid = grid_map.grid
         self.rows = grid_map.rows
@@ -112,12 +112,14 @@ class MazePathFindingVisualizer:
             # Make a copy to safely inspect the first item
             frontier_items = list(frontier)
             if frontier_items:
+                print(f"DEBUG: frontier_items (type: {type(frontier_items)}): {frontier_items[:5]}...") # Print first 5 items
                 first_item = frontier_items[0]
+                print(f"DEBUG: first_item (type: {type(first_item)}): {first_item}")
                 # Check if it looks like Dijkstra's frontier: (cost, (r, c))
                 if (
                     isinstance(first_item, tuple)
                     and len(first_item) == 2
-                    and isinstance(first_item[0], int)
+                    and isinstance(first_item[1], tuple)
                 ):
                     coords_to_draw = [item[1] for item in frontier_items]
                 else:  # Assumes BFS/DFS frontier of (r, c)
