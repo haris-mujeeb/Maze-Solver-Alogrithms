@@ -10,6 +10,8 @@ YELLOW = (255, 255, 0)
 RED = (255, 80, 80)
 WHITE = (240, 240, 240)
 GREY = (192, 192, 192)
+ORANGE = (255, 165, 0)
+PURPLE = (128, 0, 128)
 
 
 class MazeGeneratorVisualizer:
@@ -73,11 +75,13 @@ class MazeGeneratorVisualizer:
 
 
 class GridMapPathFindingVisualizer:
-    def __init__(self, grid_map: GridMap, cell_size=16):
+    def __init__(self, grid_map: GridMap, cell_size=16, start: Optional[Coord] = None, goal: Optional[Coord] = None):
         self.grid = grid_map.grid
         self.rows = grid_map.rows
         self.cols = grid_map.cols
         self.cell_size = cell_size
+        self.start = start
+        self.goal = goal
 
         pygame.init()
         self.screen = pygame.display.set_mode(
@@ -161,6 +165,32 @@ class GridMapPathFindingVisualizer:
                         self.cell_size,
                     ),
                 )
+        
+        if self.start:
+            r, c = self.start
+            pygame.draw.rect(
+                self.screen,
+                ORANGE,
+                (
+                    c * self.cell_size,
+                    r * self.cell_size,
+                    self.cell_size,
+                    self.cell_size,
+                ),
+            )
+
+        if self.goal:
+            r, c = self.goal
+            pygame.draw.rect(
+                self.screen,
+                PURPLE,
+                (
+                    c * self.cell_size,
+                    r * self.cell_size,
+                    self.cell_size,
+                    self.cell_size,
+                ),
+            )
 
         pygame.display.flip()
 
