@@ -37,9 +37,17 @@ class MazeGenerator:
         """
         Start generating a map.
 
-        mode: "DFS", "BFS", "WILSON"
-        """
+        mode: "EMPTY", "DFS", "BFS", "WILSON"
+        """        
+
         self.mode = mode.upper()
+
+        if self.mode == "EMPTY":
+            for r in range(1, self.rows - 1):
+                for c in range(1, self.cols - 1):
+                    self.grid[r][c] = 0
+            return
+
         if self.mode == "WILSON":
             self._start_wilson()
             return
@@ -65,6 +73,10 @@ class MazeGenerator:
         Perform ONE carving step.
         Returns False when generation is complete.
         """
+
+        if self.mode == "EMPTY":
+            return False
+
         if self.mode == "WILSON":
             return self._step_wilson()
 
