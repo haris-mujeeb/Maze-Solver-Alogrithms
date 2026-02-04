@@ -75,18 +75,21 @@ class MazeGeneratorVisualizer:
 
 
 class GridMapPathFindingVisualizer:
-    def __init__(self, grid_map: GridMap, cell_size=16, start: Optional[Coord] = None, goal: Optional[Coord] = None):
+    def __init__(self, screen, cell_size=16):
+        self.screen = screen
+        self.cell_size = cell_size
+        self.grid = None
+        self.rows = 0
+        self.cols = 0
+        self.start = None
+        self.goal = None
+
+    def set_grid(self, grid_map: GridMap, start: Optional[Coord] = None, goal: Optional[Coord] = None):
         self.grid = grid_map.grid
         self.rows = grid_map.rows
         self.cols = grid_map.cols
-        self.cell_size = cell_size
         self.start = start
         self.goal = goal
-
-        pygame.init()
-        self.screen = pygame.display.set_mode(
-            (self.cols * cell_size, self.rows * cell_size)
-        )
 
     def draw(
         self,
@@ -168,27 +171,31 @@ class GridMapPathFindingVisualizer:
         
         if self.start:
             r, c = self.start
+            start_size = self.cell_size * 5
+            offset = (start_size - self.cell_size) // 2
             pygame.draw.rect(
                 self.screen,
                 ORANGE,
                 (
-                    c * self.cell_size,
-                    r * self.cell_size,
-                    self.cell_size,
-                    self.cell_size,
+                    c * self.cell_size - offset,
+                    r * self.cell_size - offset,
+                    start_size,
+                    start_size,
                 ),
             )
 
         if self.goal:
             r, c = self.goal
+            goal_size = self.cell_size * 5
+            offset = (goal_size - self.cell_size) // 2
             pygame.draw.rect(
                 self.screen,
                 PURPLE,
                 (
-                    c * self.cell_size,
-                    r * self.cell_size,
-                    self.cell_size,
-                    self.cell_size,
+                    c * self.cell_size - offset,
+                    r * self.cell_size - offset,
+                    goal_size,
+                    goal_size,
                 ),
             )
 

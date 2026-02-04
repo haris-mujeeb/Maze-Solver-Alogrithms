@@ -29,15 +29,18 @@ class GridMap:
 
     def neighbours(self, pos: Coord):
         r, c = pos
-        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-            nxt = (r + dr, c + dc)
-            if self.in_bounds(nxt):
-                yield nxt
+        for dr in [-1, 0, 1]:
+            for dc in [-1, 0, 1]:
+                if dr == 0 and dc == 0:
+                    continue
+                nxt = (r + dr, c + dc)
+                if self.in_bounds(nxt):
+                    yield nxt
 
     def walkable_cells(self) -> List[Coord]:
         return [
             (r, c)
             for r in range(self.rows)
-            for c in range(self.rows)
-            if self.grid[r][c] == 1
+            for c in range(self.cols)
+            if self.grid[r][c] == 0
         ]

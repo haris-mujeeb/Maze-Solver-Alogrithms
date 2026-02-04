@@ -1,6 +1,7 @@
 import random
 from typing import List, Set, Tuple, Optional
 from .grid_map import GridMap, Grid, Coord
+from .a_star_path_finder import A_Star_Path_Finder
 
 class BlobObstacleGenerator:
     """
@@ -39,8 +40,8 @@ class BlobObstacleGenerator:
     def generate(self,
                  num_blobs: int = 40,
                  avg_blob_size: int = 30,
-                 blob_size_variation: float = 0.6,
-                 expansion_prob: float = 0.6,
+                 blob_size_variation: float = 0.9,
+                 expansion_prob: float = 0.9,
                  attempts_limit: int | None = None,
                  noise_frac: float = 0.01,
                  keep_clear: Optional[List[Coord]] = None,
@@ -131,6 +132,36 @@ class BlobObstacleGenerator:
             cc = random.randint(1, self.cols - 2)
             self.grid[rr][cc] = 1
 
+        # Check for path, and carve one if necessary
+        if keep_clear and len(keep_clear) >= 2:
+            start_node, goal_node = keep_clear[0], keep_clear[1]
+
+            path_finder = A_Star_Path_Finder(GridMap(self.grid), start_node, goal_node)
+            path = path_finder.find_path()
+
+            if not path:
+                empty_grid = [[0 for _ in range(self.cols)] for _ in range(self.rows)]
+                for r in range(self.rows):
+                    empty_grid[r][0] = 1
+                    empty_grid[r][self.cols - 1] = 1
+                for c in range(self.cols):
+                    empty_grid[0][c] = 1
+                    empty_grid[self.rows - 1][c] = 1
+                
+                empty_grid_map = GridMap(empty_grid)
+
+                ideal_path_finder = A_Star_Path_Finder(empty_grid_map, start_node, goal_node)
+                ideal_path = ideal_path_finder.find_path()
+
+                if ideal_path:
+                    carve_radius = 2
+                    for r_path, c_path in ideal_path:
+                        for dr in range(-carve_radius, carve_radius + 1):
+                            for dc in range(-carve_radius, carve_radius + 1):
+                                r, c = r_path + dr, c_path + dc
+                                if 1 <= r < self.rows - 1 and 1 <= c < self.cols - 1:
+                                    self.grid[r][c] = 0
+
         # enforce keep_clear areas
         if keep_clear:
             for center in keep_clear:
@@ -138,7 +169,7 @@ class BlobObstacleGenerator:
                 for dr in range(-clear_radius, clear_radius + 1):
                     for dc in range(-clear_radius, clear_radius + 1):
                         rr, cc2 = cr + dr, cc + dc
-                        if 0 <= rr < self.rows and 0 <= cc2 < self.cols:
+                        if 1 <= rr < self.rows - 1 and 1 <= cc2 < self.cols - 1:
                             self.grid[rr][cc2] = 0
 
         return GridMap(self.grid)

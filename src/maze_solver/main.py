@@ -9,8 +9,8 @@ from .dijkstra_path_finder import Dijkstra_Path_Finder
 from .a_star_path_finder import A_Star_Path_Finder
 from .theta_star_path_finder import ThetaStarPathFinder
 
-# ROWS, COLS = 101, 201
-ROWS, COLS = 61, 81
+ROWS, COLS = 101, 201
+# ROWS, COLS = 61, 81
 # ROWS, COLS = 41, 61
 CELL = 6
 VISUALIZE_MAP_GENERATION = True
@@ -54,18 +54,23 @@ else:
     # maze = MazeGenerator(ROWS, COLS)
     # maze.generate_full(start=(1, 1), mode="DFS")
 
-    maze = BlobObstacleGenerator(ROWS, COLS)
-    maze.generate()
-
     start_node = (1, 1)
     goal_node = (ROWS - 2, COLS - 2)
 
-    path_vis = GridMapPathFindingVisualizer(maze.get_grid_map(), CELL, start=start_node, goal=goal_node)
+    maze = BlobObstacleGenerator(ROWS, COLS, seed=42)
+    maze.generate(keep_clear=[start_node, goal_node])
+
+    pygame.init() # Initialize pygame once
+    screen = pygame.display.set_mode((COLS * CELL, ROWS * CELL))
+    pygame.display.set_caption("Pathfinding Visualization")
+
+    path_vis = GridMapPathFindingVisualizer(screen, CELL)
+    path_vis.set_grid(maze.get_grid_map(), start=start_node, goal=goal_node)
     # path_gen = BFS_Path_Finder(maze.get_grid_map(), start_node, goal_node)
     # path_gen = DFS_Path_Finder(maze.get_grid_map(), start_node, goal_node)
     # path_gen = Dijkstra_Path_Finder(maze.get_grid_map(), start_node, goal_node)
-    # path_gen = A_Star_Path_Finder(maze.get_grid_map(), start_node, goal_node)
-    path_gen = ThetaStarPathFinder(maze.get_grid_map(), start_node, goal_node)
+    path_gen = A_Star_Path_Finder(maze.get_grid_map(), start_node, goal_node)
+    # path_gen = ThetaStarPathFinder(maze.get_grid_map(), start_node, goal_node)
 
     path_gen.start()
     clock = pygame.time.Clock()
