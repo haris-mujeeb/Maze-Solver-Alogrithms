@@ -4,6 +4,28 @@ This project is a Python application that generates and solves mazes, with a vis
 
 This document also serves as a personal guide to the industrial-standard Python development practices that have been set up for this project.
 
+## Features
+
+*   **Maze Generation**: Procedurally generates mazes.
+*   **Pathfinding Visualization**: Visualizes various pathfinding algorithms as they explore the maze, providing a clear understanding of how they work.
+*   **Multiple Algorithms**: Implements a variety of pathfinding algorithms, from simple searches to more advanced, optimized techniques.
+*   **Customizable Visualization**: The start and goal points are rendered as distinct circular shapes for easy identification.
+
+## Pathfinding Algorithms
+
+This project includes the following pathfinding algorithms:
+
+*   A* (A-Star)
+*   Breadth-First Search (BFS)
+*   Depth-First Search (DFS)
+*   Dijkstra's Algorithm
+*   Theta*
+*   Lazy Theta*
+*   Rapidly-exploring Random Tree (RRT)
+*   RTT* (RRT-Star)
+
+For a detailed explanation of each algorithm, please see the [developer notes on path planners](src/README.md).
+
 ## Development Setup
 
 This project is configured with a modern Python development environment. The following steps have been completed to ensure code quality, maintainability, and ease of development.
