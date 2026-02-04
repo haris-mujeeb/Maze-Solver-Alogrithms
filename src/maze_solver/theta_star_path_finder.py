@@ -12,7 +12,6 @@ class ThetaStarPathFinder(BasePlanner):
 
     self.cost_so_far: Dict[Coord, float] = {}
     self.came_from: Dict[Coord, Optional[Coord]] = {}
-    self.closed_set: set[Coord] = set()
 
     self.current: Optional[Coord] = None
     self.path: Optional[Path] = None
@@ -21,7 +20,6 @@ class ThetaStarPathFinder(BasePlanner):
     self.frontier.clear()
     self.cost_so_far.clear()
     self.came_from.clear()
-    self.closed_set.clear()
 
     heapq.heappush(self.frontier, (0.0, self.start_coord))
     self.cost_so_far[self.start_coord] = 0.0
@@ -36,11 +34,7 @@ class ThetaStarPathFinder(BasePlanner):
     
     _, current = heapq.heappop(self.frontier)
 
-    if current in self.closed_set:
-      return True
-
     self.current = current
-    self.closed_set.add(current)
 
     if current == self.goal_coord:
       self.path = self._reconstruct_path()
