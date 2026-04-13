@@ -1,6 +1,7 @@
 # Maze Solver and Visualizer
-
 This project is a Python application that generates and solves mazes, with a visual representation of the algorithms provided by Pygame.
+
+https://github.com/user-attachments/assets/38608b49-68b6-4394-847f-b33f202648fb
 
 This document also serves as a personal guide to the industrial-standard Python development practices that have been set up for this project.
 
